@@ -2,21 +2,39 @@ import { SubscribeRequest, CommitmentLevel } from "@triton-one/yellowstone-grpc"
 
 export function createSubscribeRequest(): SubscribeRequest {
   return {
-    accounts: {},
-    slots: {},
+    accounts: {
+      "token_accounts": {
+        account: ["11111111111111111111111111111111"],
+        owner: [],
+        filters: [
+          {
+            datasize: "165",
+            memcmp: {
+              offset: "32",
+            },
+            lamports: { gt: "0" }
+          }
+        ]
+      }
+    },
+    slots: {
+      "slot_updates": {
+        filterByCommitment: true,
+        interslotUpdates: true
+      }
+    },
     transactions: {
-     group: {
-        // eg: listen to vote transactions
-        accountInclude: ["Vote111111111111111111111111111111111111111","DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"],
+      "vote_transactions": {
+        accountInclude: ["11111111111111111111111111111111"],
         accountExclude: [],
         accountRequired: [],
-     },
+      },
     },
     transactionsStatus: {},
     entry: {},
     blocks: {},
     blocksMeta: {},
     commitment: CommitmentLevel.FINALIZED,
-    accountsDataSlice: [], // Full account data
+    accountsDataSlice: [],
   };
 }
