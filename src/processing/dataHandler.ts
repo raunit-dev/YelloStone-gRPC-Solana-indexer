@@ -1,7 +1,9 @@
 import { SubscribeUpdate } from "@triton-one/yellowstone-grpc";
+import chalk from "chalk"; // Requires: npm install chalk
 
 function printSectionHeader(title: string) {
-  console.log(`\n---------------------------------------- ${title} ----------------------------------------`);
+  const line = '-'.repeat(30);
+  console.log(`\n${line} ${title} ${line}`);
 }
 
 export async function handleData(data: SubscribeUpdate): Promise<void> {
@@ -12,19 +14,17 @@ export async function handleData(data: SubscribeUpdate): Promise<void> {
     const lamports = acc?.lamports;
     const executable = acc?.executable;
     const rentEpoch = acc?.rentEpoch;
-    const dataB64 = Buffer.from(acc?.data || new Uint8Array()).toString("base64");
     const slot = data.account.slot;
+    const dataLen = acc?.data?.length || 0;
 
     printSectionHeader("📦 Account Update");
-    console.table({
-      Pubkey: pubkey,
-      Owner: owner,
-      Lamports: lamports,
-      Executable: executable,
-      RentEpoch: rentEpoch,
-      Slot: slot,
-      DataLength: dataB64.length,
-    });
+    console.log(`${chalk.cyan("Pubkey:")}         ${pubkey}`);
+    console.log(`${chalk.cyan("Owner:")}          ${owner}`);
+    console.log(`${chalk.cyan("Lamports:")}       ${lamports}`);
+    console.log(`${chalk.cyan("Executable:")}     ${executable}`);
+    console.log(`${chalk.cyan("Rent Epoch:")}     ${rentEpoch}`);
+    console.log(`${chalk.cyan("Slot:")}           ${slot}`);
+    console.log(`${chalk.cyan("Data Length:")}    ${dataLen}`);
   }
 
   if (data.transaction) {
@@ -34,11 +34,9 @@ export async function handleData(data: SubscribeUpdate): Promise<void> {
     const success = txnInfo?.meta?.err === null;
 
     printSectionHeader("🔁 Transaction");
-    console.table({
-      Signature: sig,
-      Slot: slot,
-      Success: success,
-    });
+    console.log(`${chalk.magenta("Signature:")}    ${sig}`);
+    console.log(`${chalk.magenta("Slot:")}         ${slot}`);
+    console.log(`${chalk.magenta("Success:")}      ${success}`);
   }
 
   if (data.slot) {

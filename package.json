@@ -15,6 +15,7 @@
     "@triton-one/yellowstone-grpc": "^4.0.2",
     "@types/node": "^24.0.12",
     "bs58": "^6.0.0",
+    "chalk": "^5.4.1",
     "dotenv": "^17.2.0"
   }
 }
