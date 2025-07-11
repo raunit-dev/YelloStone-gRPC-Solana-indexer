@@ -1,5 +1,9 @@
 import { SubscribeUpdate } from "@triton-one/yellowstone-grpc";
 
+function printSectionHeader(title: string) {
+  console.log(`\n---------------------------------------- ${title} ----------------------------------------`);
+}
+
 export async function handleData(data: SubscribeUpdate): Promise<void> {
   if (data.account) {
     const acc = data.account.account;
@@ -11,15 +15,15 @@ export async function handleData(data: SubscribeUpdate): Promise<void> {
     const dataB64 = Buffer.from(acc?.data || new Uint8Array()).toString("base64");
     const slot = data.account.slot;
 
-    console.log("📦 Account Update:");
-    console.log({
-      pubkey,
-      owner,
-      lamports,
-      executable,
-      rentEpoch,
-      slot,
-      dataLength: dataB64?.length || 0,
+    printSectionHeader("📦 Account Update");
+    console.table({
+      Pubkey: pubkey,
+      Owner: owner,
+      Lamports: lamports,
+      Executable: executable,
+      RentEpoch: rentEpoch,
+      Slot: slot,
+      DataLength: dataB64.length,
     });
   }
 
@@ -29,19 +33,37 @@ export async function handleData(data: SubscribeUpdate): Promise<void> {
     const slot = data.transaction.slot;
     const success = txnInfo?.meta?.err === null;
 
-    console.log("🔁 Transaction:");
-    console.log({
-      signature: sig,
-      slot,
-      success,
+    printSectionHeader("🔁 Transaction");
+    console.table({
+      Signature: sig,
+      Slot: slot,
+      Success: success,
     });
   }
 
   if (data.slot) {
-    console.log("⏱️ Slot Update:", {
-      slot: data.slot.slot,
-      parent: data.slot.parent,
-      // leader: data.slot.leader, // This property does not exist anymore
+    const { slot, parent } = data.slot;
+
+    printSectionHeader("⏱️ Slot Update");
+    console.table({
+      Slot: slot,
+      Parent: parent,
+    });
+  }
+
+  if (data.block) {
+    const block = data.block;
+
+    printSectionHeader("🧱 Block Update");
+    console.table({
+      Blockhash: block.blockhash,
+      BlockHeight: block.blockHeight,
+      BlockTime: block.blockTime,
+      ParentSlot: block.parentSlot,
+      ParentBlockhash: block.parentBlockhash,
+      ExecutedTransactions: block.executedTransactionCount,
+      UpdatedAccounts: block.updatedAccountCount,
+      Entries: block.entriesCount,
     });
   }
 }
