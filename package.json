@@ -11,11 +11,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.11.1",
     "@solana/web3.js": "^1.98.2",
     "@triton-one/yellowstone-grpc": "^4.0.2",
     "@types/node": "^24.0.12",
     "bs58": "^6.0.0",
     "chalk": "^5.4.1",
     "dotenv": "^17.2.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.11.1"
   }
 }

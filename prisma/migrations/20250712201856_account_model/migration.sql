@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Account" ALTER COLUMN "executable" DROP NOT NULL,
+ALTER COLUMN "rentEpoch" DROP NOT NULL,
+ALTER COLUMN "rentEpoch" SET DATA TYPE TEXT;

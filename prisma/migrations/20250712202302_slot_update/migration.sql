@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "SlotUpdate" ALTER COLUMN "slot" SET DATA TYPE TEXT;

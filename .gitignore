@@ -35,3 +35,5 @@ pnpm-lock.yaml
 # Windows
 Thumbs.db
 ehthumbs.db
+
+/src/generated/prisma
